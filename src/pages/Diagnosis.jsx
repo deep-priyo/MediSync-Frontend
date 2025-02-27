@@ -7,6 +7,7 @@ const Diagnosis = () => {
   const [result, setResult] = useState(null);
   const [dragActive, setDragActive] = useState(false);
   const [apiReport, setApiReport] = useState(null);
+  const [reasonDescription, setReasonDescription] = useState("");
 
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
@@ -28,10 +29,14 @@ const Diagnosis = () => {
     // Prepare FormData for API request
     const formData = new FormData();
     formData.append("image", report); // Image file
-    formData.append("symptoms", ""); // Add user-entered symptoms if needed
+    formData.append("symptoms", reasonDescription); // Add user-entered symptoms/reason
 
     try {
+<<<<<<< HEAD
       const response = await fetch("https://aihealthcarebackend.onrender.com/analyze", {
+=======
+      const response = await fetch("https://medisync-backend-rjiq.onrender.com/analyze", {
+>>>>>>> samiksha
         method: "POST",
         body: formData,
       });
@@ -155,6 +160,23 @@ const Diagnosis = () => {
                               <X size={16} className="text-gray-300" />
                             </button>
                           </div>
+
+                          {/* Patient Reason Form */}
+                          <form className="mt-6 mb-4">
+                            <div className="mb-4">
+                              <label htmlFor="reasonDescription" className="block text-gray-300 text-sm font-medium mb-2">
+                                Reason for Upload / Symptoms
+                              </label>
+                              <textarea
+                                id="reasonDescription"
+                                value={reasonDescription}
+                                onChange={(e) => setReasonDescription(e.target.value)}
+                                placeholder="Please describe why you're uploading this image (e.g., chest pain, persistent cough, follow-up for previous condition)..."
+                                className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                                rows="4"
+                              ></textarea>
+                            </div>
+                          </form>
 
                           <button
                               onClick={handleDiagnosis}

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { FaHome, FaClipboardList, FaCog, FaSignOutAlt, FaUser } from "react-icons/fa";
+import { FaHome, FaClipboardList, FaCog, FaSignOutAlt, FaUser, FaRobot } from "react-icons/fa";
 
 const Sidebar = () => {
   return (
@@ -14,6 +14,9 @@ const Sidebar = () => {
         </Link>
         <Link to="/medical-history" className="flex items-center space-x-3 hover:text-pink-400 transition">
           <FaUser /> <span>Medical History</span>
+        </Link>
+        <Link to="/aidoctor" className="flex items-center space-x-3 hover:text-pink-400 transition">
+          <FaRobot /> <span>AI Doctor</span>
         </Link>
         <Link to="/settings" className="flex items-center space-x-3 hover:text-pink-400 transition">
           <FaCog /> <span>Settings</span>
