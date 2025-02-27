@@ -10,6 +10,7 @@ import Contact from "./components/Contact";
 import Appointments from "./pages/Appointments";
 import Medications from "./pages/Medications";
 import AiDoctor from "./pages/AiDoctor.jsx";
+import Prescription from "./pages/Prescription.jsx";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path="/history" element={<MedicalHistory />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/aidoctor" element={<AiDoctor />} />
+        <Route path="/prescription" element={<Prescription />} />
       </Routes>
     </Router>
   );
