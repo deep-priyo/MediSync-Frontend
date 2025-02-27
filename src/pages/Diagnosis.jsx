@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Upload, FileText, Check, AlertTriangle, Loader, X, FileSymlink, Share2 } from "lucide-react";
+import { Upload, FileText} from "lucide-react";
 
 const Diagnosis = () => {
   const [report, setReport] = useState(null);
@@ -31,7 +31,7 @@ const Diagnosis = () => {
     formData.append("symptoms", ""); // Add user-entered symptoms if needed
 
     try {
-      const response = await fetch("http://127.0.0.1:5000/analyze", {
+      const response = await fetch("https://aihealthcarebackend.onrender.com/analyze", {
         method: "POST",
         body: formData,
       });
