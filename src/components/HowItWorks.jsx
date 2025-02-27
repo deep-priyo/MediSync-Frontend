@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 const HowItWorks = () => {
   const [activeCard, setActiveCard] = useState(null);
   const scrollContainerRef = useRef(null);
-  
+
   const steps = [
     {
       icon: <FaUpload className="text-5xl text-pink-400 mx-auto group-hover:text-white" />,
@@ -38,7 +38,7 @@ const HowItWorks = () => {
       glowColor: "#10b981",
       hoverBg: "bg-green-500"
     },
-    // Duplicate steps for continuous scrolling
+    // Duplicate steps for seamless scrolling
     {
       icon: <FaUpload className="text-5xl text-pink-400 mx-auto group-hover:text-white" />,
       title: "Upload Report",
@@ -73,46 +73,42 @@ const HowItWorks = () => {
     }
   ];
 
-  // Auto-scrolling effect
+  // Auto-scroll from left to right
   useEffect(() => {
     const scrollContainer = scrollContainerRef.current;
-    let scrollAmount = 0;
+    let scrollAmount = scrollContainer ? scrollContainer.scrollWidth : 0;
     const speed = 0.5;
-    const cardWidth = 288; // Card width (256px) + gap (32px)
-    const totalWidth = cardWidth * (steps.length / 2);
-    
+    const totalWidth = scrollContainer ? scrollContainer.scrollWidth / 2 : 0;
+
     let interval;
-    
+
     const scroll = () => {
       if (scrollContainer) {
         scrollContainer.scrollLeft = scrollAmount;
-        scrollAmount += speed;
-        
-        if (scrollAmount >= totalWidth) {
-          scrollAmount = 0;
+        scrollAmount -= speed;
+
+        if (scrollAmount <= 0) {
+          scrollAmount = totalWidth;
         }
       }
     };
-    
+
     interval = setInterval(scroll, 20);
-    
-    const pauseScroll = () => {
-      clearInterval(interval);
-    };
-    
+
+    const pauseScroll = () => clearInterval(interval);
     const resumeScroll = () => {
       clearInterval(interval);
       interval = setInterval(scroll, 20);
     };
-    
-    scrollContainer.addEventListener('mouseenter', pauseScroll);
-    scrollContainer.addEventListener('mouseleave', resumeScroll);
-    
+
+    scrollContainer.addEventListener("mouseenter", pauseScroll);
+    scrollContainer.addEventListener("mouseleave", resumeScroll);
+
     return () => {
       clearInterval(interval);
       if (scrollContainer) {
-        scrollContainer.removeEventListener('mouseenter', pauseScroll);
-        scrollContainer.removeEventListener('mouseleave', resumeScroll);
+        scrollContainer.removeEventListener("mouseenter", pauseScroll);
+        scrollContainer.removeEventListener("mouseleave", resumeScroll);
       }
     };
   }, []);
@@ -123,7 +119,7 @@ const HowItWorks = () => {
         <h2 className="text-3xl font-bold text-white mb-2">How It Works</h2>
         <p className="text-gray-400 mt-2 mb-8">Follow these simple steps to get your AI-driven diagnosis</p>
       </div>
-      
+
       <div 
         ref={scrollContainerRef}
         className="flex overflow-x-hidden w-full"
@@ -143,7 +139,7 @@ const HowItWorks = () => {
                 `}
                 onClick={() => setActiveCard(index === activeCard ? null : index)}
                 style={{
-                  '--glow-color': step.glowColor
+                  "--glow-color": step.glowColor
                 }}
               >
                 <div className={activeCard === index ? "text-white" : ""}>
@@ -156,51 +152,50 @@ const HowItWorks = () => {
           ))}
         </div>
       </div>
-      
+
       {/* Custom CSS for the glow effect */}
       <style jsx>{`
-  .glow-container {
-    position: relative;
-    padding: 3px;
-    border-radius: 0.9em;
-    transition: all 0.4s ease-in-out;
-  }
+        .glow-container {
+          position: relative;
+          padding: 3px;
+          border-radius: 0.9em;
+          transition: all 0.4s ease-in-out;
+        }
 
-  .glow-container::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: 0.9em;
-    z-index: -1;
-    background: var(--glow-color);
-    opacity: 0;
-    transition: all 0.4s ease-in-out;
-    filter: blur(0);
-  }
+        .glow-container::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          border-radius: 0.9em;
+          z-index: -1;
+          background: var(--glow-color);
+          opacity: 0;
+          transition: all 0.4s ease-in-out;
+          filter: blur(0);
+        }
 
-  .glow-container:hover::before {
-    opacity: 0.8;
-    filter: blur(1.5em);
-  }
+        .glow-container:hover::before {
+          opacity: 0.8;
+          filter: blur(1.5em);
+        }
 
-  .card-content {
-    position: relative;
-    z-index: 2;
-    background: rgba(10, 15, 36, 0.7);
-    transition: all 0.4s ease-in-out;
-  }
+        .card-content {
+          position: relative;
+          z-index: 2;
+          background: rgba(10, 15, 36, 0.7);
+          transition: all 0.4s ease-in-out;
+        }
 
-  .glow-container:hover .card-content {
-    background: var(--glow-color);
-    color: white;
-  }
+        .glow-container:hover .card-content {
+          background: var(--glow-color);
+          color: white;
+        }
 
-  /* Hide scrollbar */
-  div::-webkit-scrollbar {
-    display: none;
-  }
-`}</style>
-
+        /* Hide scrollbar */
+        div::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
     </section>
   );
 };
