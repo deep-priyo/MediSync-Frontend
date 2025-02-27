@@ -14,6 +14,12 @@ const Diagnosis = () => {
       setReport(file);
     }
   };
+  const cleanText = (text) => {
+    return text
+        .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>") // Convert **bold** to <strong>
+        .replace(/\*(.*?)\*/g, "<em>$1</em>") // Convert *italic* to <em>
+        .replace(/\n/g, "<br/>"); // Convert line breaks to <br/>
+  };
 
   const handleDiagnosis = async () => {
     if (!report) {
@@ -29,7 +35,11 @@ const Diagnosis = () => {
     formData.append("symptoms", reasonDescription);
 
     try {
-      const response = await fetch("https://medisync-backend-rjiq.onrender.com/analyze", {
+
+
+
+      const response = await fetch("http://127.0.0.1:10000/analyze", {
+
         method: "POST",
         body: formData,
       });
@@ -158,21 +168,44 @@ const Diagnosis = () => {
               </div>
             </div>
 
-            {/* Diagnosis Result */}
-            <div className="bg-gray-800 rounded-xl shadow-lg border border-gray-700 p-6">
-              <h2 className="text-xl font-medium mb-4">Diagnosis Results</h2>
-              {result ? (
-                <div className="space-y-6">
-                  <h3 className="text-lg font-medium text-white">AI Diagnosis Report</h3>
-                  <p className="text-gray-300 text-sm">{result.diagnosis}</p>
+
+              {/* Diagnosis Results */}
+              <div className="bg-gray-800 rounded-xl shadow-lg border border-gray-700 overflow-hidden">
+                <div className="flex justify-between items-center p-4 border-b border-gray-700">
+                  <h2 className="text-xl font-medium">Diagnosis Results</h2>
                 </div>
-              ) : (
-                <div className="flex flex-col items-center justify-center h-64 text-center">
-                  <FileText size={48} className="text-gray-600 mb-4" />
-                  <h3 className="text-lg font-medium text-white mb-2">No Results Yet</h3>
-                  <p className="text-gray-300 text-sm">Upload a report and run AI diagnosis to see results here</p>
+
+                <div className="p-6">
+                  {result ? (
+                      <div className="space-y-6">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <h3 className="text-lg font-medium text-white">
+                              AI Diagnosis Report
+                            </h3>
+                            <p
+                                className="text-gray-300 text-m"
+                                dangerouslySetInnerHTML={{
+                                  __html: cleanText(result.diagnosis),
+                                }}
+                            ></p>
+                          </div>
+                        </div>
+                      </div>
+                  ) : (
+                      <div className="flex flex-col items-center justify-center h-64 text-center">
+                        <FileText size={48} className="text-gray-600 mb-4" />
+                        <h3 className="text-lg font-medium text-white mb-2">
+                          No Results Yet
+                        </h3>
+                        <p className="text-gray-300 text-sm">
+                          Upload a medical report and run AI diagnosis to see results here
+                        </p>
+                      </div>
+                  )}
                 </div>
-              )}
+              </div>
+
             </div>
           </div>
         </div>
