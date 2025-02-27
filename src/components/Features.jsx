@@ -134,21 +134,14 @@ const Features = () => {
             <div key={index} className="glow-container">
               <div
                 className={`
-                  group flex-shrink-0 bg-opacity-20 backdrop-blur-lg 
-                  ${activeCard === index ? `${feature.hoverBg} bg-opacity-30 ${feature.borderColor}` : feature.borderColor} 
-                  text-white p-6 rounded-xl shadow-lg w-64 border
-                  hover:${feature.hoverBg} hover:bg-opacity-30
-                  hover:scale-105 transition duration-300 cursor-pointer
-                  card-content
+                  card-content group flex-shrink-0 backdrop-blur-lg 
+                  border ${feature.borderColor} text-white p-6 rounded-xl shadow-lg w-64
+                  transition duration-300 cursor-pointer
                 `}
                 onClick={() => setActiveCard(index === activeCard ? null : index)}
-                style={{
-                  '--glow-color': feature.glowColor
-                }}
+                style={{ '--glow-color': feature.glowColor }}
               >
-                <div className={activeCard === index ? "text-white" : ""}>
-                  {feature.icon}
-                </div>
+                <div>{feature.icon}</div>
                 <h3 className="font-semibold text-xl mt-4">{feature.title}</h3>
                 <p className="text-gray-300 mt-2">{feature.description}</p>
               </div>
@@ -159,48 +152,51 @@ const Features = () => {
       
       {/* Custom CSS for the glow effect */}
       <style jsx>{`
-  .glow-container {
-    position: relative;
-    padding: 3px;
-    border-radius: 0.9em;
-    transition: all 0.4s ease-in-out;
-  }
+        .glow-container {
+          position: relative;
+          padding: 3px;
+          border-radius: 0.9em;
+          transition: all 0.4s ease-in-out;
+        }
 
-  .glow-container::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: 0.9em;
-    z-index: -1;
-    background: var(--glow-color);
-    opacity: 0;
-    transition: all 0.4s ease-in-out;
-    filter: blur(0);
-  }
+        .glow-container::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          border-radius: 0.9em;
+          z-index: -1;
+          background: var(--glow-color);
+          opacity: 0;
+          transition: all 0.4s ease-in-out;
+          filter: blur(0);
+        }
 
-  .glow-container:hover::before {
-    opacity: 0.8;
-    filter: blur(1.5em);
-  }
+        .glow-container:hover::before {
+          opacity: 0.8;
+          filter: blur(1.5em);
+        }
 
-  .card-content {
-    position: relative;
-    z-index: 2;
-    background: rgba(10, 15, 36, 0.7);
-    transition: all 0.4s ease-in-out;
-  }
+        .card-content {
+          position: relative;
+          z-index: 2;
+          background: rgba(10, 15, 36, 0.7);
+          transition: all 0.4s ease-in-out;
+        }
 
-  .glow-container:hover .card-content {
-    background: var(--glow-color);
-    color: white;
-  }
+        .glow-container:hover .card-content {
+          background: var(--glow-color);
+          color: white;
+        }
 
-  /* Hide scrollbar */
-  div::-webkit-scrollbar {
-    display: none;
-  }
-`}</style>
+        .glow-container:hover .card-content svg {
+          color: white !important;
+        }
 
+        /* Hide scrollbar */
+        div::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
     </section>
   );
 };
