@@ -80,6 +80,8 @@ const Dashboard = () => {
       setActiveMenuItem("medications");
     } else if (path === "/appointments") {
       setActiveMenuItem("appointments");
+    } else if (path === "/aidoctor") {
+      setActiveMenuItem("ai-doctor");
     }
   }, [location]);
 
@@ -103,6 +105,9 @@ const Dashboard = () => {
         break;
       case "appointments":
         navigate("/appointments");
+        break;
+      case "ai-doctor":
+        navigate("/aidoctor");
         break;
       default:
         navigate("/dashboard");
@@ -155,6 +160,7 @@ const Dashboard = () => {
         <div className="flex-1 space-y-2">
           <MenuItem icon="home" label="Home" value="home" />
           <MenuItem icon="psychology" label="AI Diagnosis" value="ai-diagnosis" />
+          <MenuItem icon="medical_services" label="AI Doctor" value="ai-doctor" />
           <MenuItem icon="history" label="Medical History" value="medical-history" />
           <MenuItem icon="medication" label="Medications" value="medications" />
           <MenuItem icon="event_available" label="Appointments" value="appointments" />

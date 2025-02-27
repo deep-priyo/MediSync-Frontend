@@ -1,6 +1,6 @@
 import { useState} from "react";
 
-const API_URL = "http://127.0.0.1:5000/diagnose"; // Update with Render URL if deployed
+const API_URL = "https://medisync-backend-rjiq.onrender.com/diagnose"; // Update with Render URL if deployed
 
 const AiDoctor = () => {
     const [formData, setFormData] = useState({
