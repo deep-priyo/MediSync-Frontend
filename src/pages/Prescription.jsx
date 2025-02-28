@@ -28,7 +28,7 @@ const Prescription = () => {
         formData.append("image", prescription);
 
         try {
-            const response = await fetch("http://127.0.0.1:10000/prescriptionanalyze", {
+            const response = await fetch("https://medisync-backend-rjiq.onrender.com/prescriptionanalyze", {
                 method: "POST",
                 body: formData,
             });
