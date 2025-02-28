@@ -1,25 +1,18 @@
 import { useState } from "react";
 import { Upload, FileText, X, Loader } from "lucide-react";
+import { marked } from "marked"; // ✅ Import Markdown parser
 
 const Prescription = () => {
     const [prescription, setPrescription] = useState(null);
     const [loading, setLoading] = useState(false);
     const [result, setResult] = useState(null);
     const [dragActive, setDragActive] = useState(false);
-    const [supportingDetails, setSupportingDetails] = useState("");
 
     const handleFileUpload = (e) => {
         const file = e.target.files[0];
         if (file) {
             setPrescription(file);
         }
-    };
-
-    const cleanText = (text) => {
-        return text
-            .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
-            .replace(/\*(.*?)\*/g, "<em>$1</em>")
-            .replace(/\n/g, "<br/>");
     };
 
     const handlePrescriptionAnalysis = async () => {
@@ -33,24 +26,29 @@ const Prescription = () => {
 
         const formData = new FormData();
         formData.append("image", prescription);
-        formData.append("details", supportingDetails);
 
         try {
-            const response = await fetch("http://127.0.0.1:10000/analyze-prescription", {
+            const response = await fetch("http://127.0.0.1:10000/prescriptionanalyze", {
                 method: "POST",
                 body: formData,
             });
 
             const data = await response.json();
 
-            if (response.ok) {
-                setResult(data);
-            } else {
-                alert("Error: " + data.error);
+            if (!response.ok) {
+                throw new Error(data.error || "Unknown error occurred");
             }
+
+            if (!data.extracted_text) {
+                throw new Error("Invalid response format from API");
+            }
+
+            // ✅ Convert Markdown to HTML
+            setResult(marked(data.extracted_text));
         } catch (error) {
             console.error("Error connecting to API:", error);
-            alert("Failed to connect to server.");
+            alert(error.message);
+            setResult(null);
         } finally {
             setLoading(false);
         }
@@ -128,17 +126,6 @@ const Prescription = () => {
                                             </button>
                                         </div>
 
-                                        <form className="mt-6 mb-4">
-                                            <label className="block text-gray-300 text-sm font-medium mb-2">Supporting Details (Optional)</label>
-                                            <textarea
-                                                value={supportingDetails}
-                                                onChange={(e) => setSupportingDetails(e.target.value)}
-                                                placeholder="Add any additional details if necessary..."
-                                                className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500"
-                                                rows="4"
-                                            ></textarea>
-                                        </form>
-
                                         <button
                                             onClick={handlePrescriptionAnalysis}
                                             disabled={loading}
@@ -164,7 +151,7 @@ const Prescription = () => {
                             <h2 className="text-xl font-medium mb-4">Analysis Results</h2>
                             <div>
                                 {result ? (
-                                    <p className="text-gray-300" dangerouslySetInnerHTML={{ __html: cleanText(result.analysis) }}></p>
+                                    <div className="text-gray-300" dangerouslySetInnerHTML={{ __html: result }}></div>
                                 ) : (
                                     <p className="text-gray-400">Upload a prescription and analyze to see results here</p>
                                 )}
