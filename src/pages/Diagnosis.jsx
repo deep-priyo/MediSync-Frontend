@@ -210,7 +210,6 @@ const Diagnosis = () => {
           </div>
         </div>
       </div>
-    </div>
   );
 };
 
