@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -51,12 +51,7 @@ const Navbar = () => {
             Contact
           </button>
           
-          <Link to="/login" className="nav-link px-4 py-2 bg-pink-500 rounded-lg text-white shadow-lg hover:bg-pink-600 transition">
-            Sign In
-          </Link>
-          <Link to="/register" className="nav-link px-4 py-2 bg-pink-500 rounded-lg text-white shadow-lg hover:bg-pink-600 transition">
-            Sign Up
-          </Link>
+
         </div>
       </div>
     </nav>
